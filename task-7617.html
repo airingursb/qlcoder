@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div style="margin: 20px auto; width:900px;">
+    <canvas id="canvasA" style="display:block;float:left;border:1px solid #aaa;">
+    </canvas>
+
+    <canvas id="canvasB" style="display:block;float:right;border:1px solid #aaa;">
+    </canvas>
+</div>
+<div style="clear: both"></div>
+
+<div style="text-align: center; margin-top: 50px; font-size: 20px;">
+    <a href="javascript:answer()">Answer</a>
+</div>
+
+<script>
+    var canvasA = document.getElementById("canvasA");
+    var contextA = canvasA.getContext("2d");
+
+    var canvasB = document.getElementById("canvasB");
+    var contextB = canvasB.getContext("2d");
+
+    var image = new Image();
+
+    window.onload = function () {
+        image.src = "./material/task-7617.png";
+        image.onload = function () {
+            canvasA.width = canvasB.width = image.width;
+            canvasA.height = canvasB.height = image.height;
+            contextA.drawImage(image, 0, 0, canvasA.width, canvasA.height);
+        }
+    };
+
+    function answer() {
+        var imageData = contextA.getImageData(0, 0, canvasA.width, canvasA.height);
+        var pixelData = imageData.data;
+        for (var i = 0; i < canvasB.width * canvasB.height; i++) {
+
+            var r = pixelData[i * 4];
+            var g = pixelData[i * 4 + 1];
+            var b = pixelData[i * 4 + 2];
+
+            if (r % 2 == 0) {
+                pixelData[i * 4] = 0;
+            } else {
+                pixelData[i * 4] = 255;
+            }
+
+            pixelData[i * 4 + 1] = 0;
+            pixelData[i * 4 + 2] = 0;
+        }
+
+        contextB.putImageData(imageData, 0, 0, 0, 0, canvasB.width, canvasB.height);
+    }
+</script>
+</body>
+</html>
